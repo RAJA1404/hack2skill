@@ -1,6 +1,6 @@
 # Intelligent Candidate Discovery & Ranking System
 
-**India Runs Hackathon - Data & AI Challenge | Track 01 | Redrob AI x Hack2Skill**  
+**India Runs Hackathon - Data & AI Challenge | Track 01 | Redrob AI x Hack2Skill**
 **by Raja K C**
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue)](https://python.org)
@@ -18,11 +18,16 @@ I built this in about 2-4 hours for the India Runs Hackathon.
 
 ## What It Does
 
-You give it a job description and a list of candidate profiles. It ranks them by how well they actually fit the role - using AI embeddings, skill matching, and activity signals combined into one score. Output is a clean ranked CSV ready to use.
+You give it a job description and a list of candidate profiles. It ranks them by how well they actually fit the role - using AI embeddings, skill matching, and activity signals combined into one score.
+
+It outputs three things:
+- A ranked CSV file ready to submit
+- A visual HTML report you can open in any browser
+- A terminal breakdown showing exactly why each candidate ranked where they did
 
 ---
 
-## Run It (3 steps)
+## Run It
 
 ```bash
 git clone https://github.com/RAJA1404/hack2skill.git
@@ -31,9 +36,12 @@ pip install -r requirements.txt
 python src/ranker.py
 ```
 
-Results saved to `output/ranked_candidates.csv`.
+Show only top 3:
+```bash
+python src/ranker.py --top 3
+```
 
-No data files needed to test it - demo data is built in. To use your own data, drop `job_description.json` and `candidates.json` into the `/data` folder.
+No data files needed to test - demo data is built in. To use your own data, drop `job_description.json` and `candidates.json` into the `/data` folder.
 
 ---
 
@@ -50,25 +58,37 @@ I did not want to rely on just one signal. A candidate with a great profile but 
 
 The semantic layer uses `all-MiniLM-L6-v2` from sentence-transformers. It converts both the job description and each candidate profile into 384-dimension vectors, then measures cosine similarity. This is how it catches things like "built ETL workflows" matching "data pipelines" - a keyword filter would miss that completely.
 
-Skill matching also handles real-world variations. `PySpark` correctly matches `Apache Spark` through a fuzzy alias system I wrote.
+Skill matching handles real-world variations through a fuzzy alias system. `PySpark` correctly matches `Apache Spark`, `ML` matches `Machine Learning`, `Postgres` matches `PostgreSQL` and so on.
 
-If sentence-transformers is not installed, the system automatically falls back to a TF-IDF cosine similarity I built from scratch - so it always runs, even in minimal environments.
+If sentence-transformers is not installed, the system automatically falls back to TF-IDF cosine similarity built from scratch - so it always runs, even in minimal environments.
 
 ---
 
 ## Sample Output
 
+Terminal:
 ```text
 -----------------------------------------------------------------
   TOP 5 CANDIDATES
 -----------------------------------------------------------------
   # 1  Ananya Sharma          Score: 0.82  ################
+       Matched : Python, SQL, Apache Spark, AWS, ETL
+       Missing : Data Pipelines
+       Preferred: Airflow
+
   # 2  Meera Iyer             Score: 0.80  ###############
+       Matched : Python, SQL, Apache Spark, AWS, ETL
+       Missing : Data Pipelines
+       Preferred: Kafka, Airflow
+
   # 3  Priya Nair             Score: 0.79  ###############
-  # 4  Rahul Verma            Score: 0.50  ##########
-  # 5  Arun Kumar             Score: 0.46  #########
+       Matched : Python, SQL, Apache Spark
+       Missing : AWS, ETL, Data Pipelines
+       Preferred: Kafka, Machine Learning, GCP
 -----------------------------------------------------------------
 ```
+
+HTML report (`output/report.html`) — open in browser for a visual ranked table with score bars, matched skills in green, and missing skills in red.
 
 ---
 
@@ -82,7 +102,8 @@ hack2skill/
 |   +-- job_description.json   <- job description input
 |   +-- candidates.json        <- candidate profiles
 +-- output/
-|   +-- ranked_candidates.csv  <- ranked output
+|   +-- ranked_candidates.csv  <- ranked CSV output
+|   +-- report.html            <- visual HTML report
 +-- requirements.txt
 +-- README.md
 ```
@@ -92,7 +113,6 @@ hack2skill/
 ## Input Format
 
 **job_description.json**
-
 ```json
 {
   "title": "Senior Data Engineer",
@@ -104,7 +124,6 @@ hack2skill/
 ```
 
 **candidates.json**
-
 ```json
 [
   {
