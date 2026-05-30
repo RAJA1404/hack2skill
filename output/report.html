@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Candidate Ranking Report</title>
+<style>
+  body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; color: #333; }
+  h1 { color: #0d3349; } h2 { color: #555; font-weight: normal; }
+  table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  th { background: #0d3349; color: white; padding: 12px 10px; text-align: left; font-size: 13px; }
+  td { padding: 12px 10px; border-bottom: 1px solid #eee; font-size: 13px; vertical-align: top; }
+  tr:nth-child(1) td { background: #e8f5e9; }
+  tr:nth-child(2) td { background: #f1f8e9; }
+  tr:nth-child(3) td { background: #f9fbe7; }
+  .formula { background: #0d3349; color: #4caf50; padding: 12px 20px; border-radius: 6px; font-family: monospace; margin: 20px 0; }
+  footer { margin-top: 30px; color: #999; font-size: 12px; }
+</style>
+</head>
+<body>
+<h1>Intelligent Candidate Discovery & Ranking System</h1>
+<h2>India Runs Hackathon &mdash; Data & AI Challenge | Track 01 | by Raja K C</h2>
+<h3>Role: Senior Data Engineer &nbsp;|&nbsp; Required Experience: 3+ years</h3>
+<div class="formula">Final Score = 55% Semantic + 30% Skill Match + 15% Activity + 5% Experience Bonus (capped at 1.0)</div>
+<table>
+  <thead>
+    <tr>
+      <th>Rank</th><th>Candidate</th><th>Final Score</th><th>Semantic</th>
+      <th>Skill</th><th>Activity</th><th>Experience</th>
+      <th>Matched Skills</th><th>Missing Skills</th>
+    </tr>
+  </thead>
+  <tbody>
+        <tr>
+          <td style="font-weight:bold;color:#2e7d32">#1</td>
+          <td><strong>Ananya Sharma</strong><br><small style="color:#666">Python data engineer with 5 years building ETL pipelines on AWS and Spark....</small></td>
+          <td>
+            <div style="background:#e0e0e0;border-radius:4px;height:16px;width:120px">
+              <div style="background:#4caf50;width:82%;height:16px;border-radius:4px"></div>
+            </div>
+            <small>0.8248</small>
+          </td>
+          <td>0.8178</td>
+          <td>0.6583</td>
+          <td>0.85</td>
+          <td>5 yrs</td>
+          <td><span style="color:#2e7d32">Python, SQL, Apache Spark, AWS, ETL</span></td>
+          <td><span style="color:#c62828">Data Pipelines</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:bold;color:#2e7d32">#2</td>
+          <td><strong>Meera Iyer</strong><br><small style="color:#666">Senior data engineer specializing in real-time streaming with Kafka and Spark....</small></td>
+          <td>
+            <div style="background:#e0e0e0;border-radius:4px;height:16px;width:120px">
+              <div style="background:#4caf50;width:79%;height:16px;border-radius:4px"></div>
+            </div>
+            <small>0.7992</small>
+          </td>
+          <td>0.7495</td>
+          <td>0.7333</td>
+          <td>0.78</td>
+          <td>6 yrs</td>
+          <td><span style="color:#2e7d32">Python, SQL, Apache Spark, AWS, ETL</span></td>
+          <td><span style="color:#c62828">Data Pipelines</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:bold;color:#2e7d32">#3</td>
+          <td><strong>Priya Nair</strong><br><small style="color:#666">Data scientist experienced in ML pipelines, PySpark, and GCP infrastructure....</small></td>
+          <td>
+            <div style="background:#e0e0e0;border-radius:4px;height:16px;width:120px">
+              <div style="background:#4caf50;width:78%;height:16px;border-radius:4px"></div>
+            </div>
+            <small>0.7863</small>
+          </td>
+          <td>0.7742</td>
+          <td>0.575</td>
+          <td>0.92</td>
+          <td>4 yrs</td>
+          <td><span style="color:#2e7d32">Python, SQL, Apache Spark</span></td>
+          <td><span style="color:#c62828">AWS, ETL, Data Pipelines</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:bold;color:#555">#4</td>
+          <td><strong>Rahul Verma</strong><br><small style="color:#666">Backend developer with 2 years of Python and SQL experience. Learning cloud....</small></td>
+          <td>
+            <div style="background:#e0e0e0;border-radius:4px;height:16px;width:120px">
+              <div style="background:#90a4ae;width:50%;height:16px;border-radius:4px"></div>
+            </div>
+            <small>0.5013</small>
+          </td>
+          <td>0.6205</td>
+          <td>0.2333</td>
+          <td>0.6</td>
+          <td>2 yrs</td>
+          <td><span style="color:#2e7d32">Python, SQL</span></td>
+          <td><span style="color:#c62828">Apache Spark, AWS, ETL, Data Pipelines</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:bold;color:#555">#5</td>
+          <td><strong>Arun Kumar</strong><br><small style="color:#666">DevOps engineer comfortable with cloud deployments and scripting....</small></td>
+          <td>
+            <div style="background:#e0e0e0;border-radius:4px;height:16px;width:120px">
+              <div style="background:#90a4ae;width:46%;height:16px;border-radius:4px"></div>
+            </div>
+            <small>0.4609</small>
+          </td>
+          <td>0.5335</td>
+          <td>0.1167</td>
+          <td>0.55</td>
+          <td>3 yrs</td>
+          <td><span style="color:#2e7d32">AWS</span></td>
+          <td><span style="color:#c62828">Python, SQL, Apache Spark, ETL, Data Pipelines</span></td>
+        </tr></tbody>
+</table>
+<footer>
+  Generated by: github.com/RAJA1404/hack2skill &nbsp;|&nbsp; linkedin.com/in/raja-k-c-991b7a294
+</footer>
+</body>
+</html>
