@@ -1,0 +1,7 @@
+rank,candidate_id,name,final_score,semantic_score,skill_score,activity_score,experience_years,skills,summary
+1,C001,Ananya Sharma,0.8248,0.8178,0.6583,0.85,5,"Python, Apache Spark, AWS, SQL, ETL, Airflow",Python data engineer with 5 years building ETL pipelines on AWS and Spark.
+2,C005,Meera Iyer,0.7992,0.7495,0.7333,0.78,6,"Apache Spark, Kafka, Python, SQL, AWS, Airflow, ETL",Senior data engineer specializing in real-time streaming with Kafka and Spark.
+3,C003,Priya Nair,0.7863,0.7742,0.575,0.92,4,"Python, PySpark, GCP, Machine Learning, SQL, Kafka","Data scientist experienced in ML pipelines, PySpark, and GCP infrastructure."
+4,C002,Rahul Verma,0.5013,0.6205,0.2333,0.6,2,"Python, SQL, Django, PostgreSQL",Backend developer with 2 years of Python and SQL experience. Learning cloud.
+5,C004,Arun Kumar,0.4609,0.5335,0.1167,0.55,3,"AWS, Docker, Bash, Terraform",DevOps engineer comfortable with cloud deployments and scripting.
+6,C006,Vikram Singh,0.4085,0.5064,0.2333,0.4,0,"Python, SQL, pandas",Fresh graduate with Python and SQL knowledge from academic projects.
