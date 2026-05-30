@@ -1,0 +1,7 @@
+{
+  "title": "Senior Data Engineer",
+  "description": "We are looking for a Senior Data Engineer to build and maintain scalable data pipelines. The role requires strong Python skills, experience with SQL, Apache Spark, and cloud platforms like AWS or GCP. The candidate should have 3+ years of experience in data engineering, understand ETL processes, and be comfortable working in agile teams. Bonus: experience with ML pipelines, Kafka, or Airflow.",
+  "required_skills": ["Python", "SQL", "Apache Spark", "AWS", "ETL", "Data Pipelines"],
+  "preferred_skills": ["Kafka", "Airflow", "Machine Learning", "GCP"],
+  "experience_years": 3
+}
