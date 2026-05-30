@@ -2,7 +2,7 @@
 India Runs - Data & AI Challenge
 Intelligent Candidate Discovery & Ranking System
 Author: Raja K C
-GitHub: https://github.com/raja-k-c/india-runs-ai
+GitHub: https://github.com/RAJA1404/hack2skill.git
 """
 
 import json
