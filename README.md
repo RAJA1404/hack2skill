@@ -1,159 +1,108 @@
-# Intelligent Candidate Discovery & Ranking System
+# Redrob Hackathon - Intelligent Candidate Ranking System
 
-**India Runs Hackathon - Data & AI Challenge | Track 01 | Redrob AI x Hack2Skill**
-**by Raja K C**
+India Runs Data & AI Challenge, Track 01  
+Author: Raja K C
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue)](https://python.org)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
+## What This Does
 
----
+This project ranks candidates for the Redrob AI hiring challenge using a production-grade, multi-signal Python ranker. It combines semantic matching, skill evidence, career quality, experience fit, location preference, availability signals, and honeypot filtering to produce a clean top-100 `submission.csv`.
 
 ## Why I Built This
 
-Recruiters go through hundreds of profiles for a single role. Most tools just match keywords - they miss candidates who describe the same skill differently. I wanted to build something that actually understands the meaning behind a profile, not just the words. The goal was simple: help recruiters find the strongest candidates faster and analyse them better.
+Recruiters review hundreds or thousands of profiles for one role. Keyword-only filters miss strong candidates who describe the same skill differently, and they can be fooled by keyword stuffing. I built this ranker to identify candidates who are genuinely aligned with the role, explain why they rank highly, and keep the process reproducible without API calls or GPU dependency.
 
-I built this in about 2-4 hours for the India Runs Hackathon.
+Built in about 2-4 hours for the India Runs Hackathon.
 
----
-
-## What It Does
-
-You give it a job description and a list of candidate profiles. It ranks them by how well they actually fit the role - using AI embeddings, skill matching, and activity signals combined into one score.
-
-It outputs three things:
-- A ranked CSV file ready to submit
-- A visual HTML report you can open in any browser
-- A terminal breakdown showing exactly why each candidate ranked where they did
-
----
-
-## Run It
+## Quick Start
 
 ```bash
 git clone https://github.com/RAJA1404/hack2skill.git
 cd hack2skill
 pip install -r requirements.txt
-python src/ranker.py
+python src/rank.py --candidates ./data/candidates.jsonl --out ./output/submission.csv
 ```
 
-Show only top 3:
+Single reproduce command after dependencies are installed:
+
 ```bash
-python src/ranker.py --top 3
+python src/rank.py --candidates ./data/candidates.jsonl --out ./output/submission.csv
 ```
 
-No data files needed to test - demo data is built in. To use your own data, drop `job_description.json` and `candidates.json` into the `/data` folder.
+## Full Dataset Result
 
----
+The ranker was tested on the 100,000-candidate dataset and generated a valid top-100 submission file.
 
-## How the Scoring Works
+- 100,000 candidates loaded
+- 25 honeypot profiles detected
+- 63,004 obvious non-fits filtered before scoring
+- 36,996 real candidates scored
+- 100 ranked candidates exported to `output/submission.csv`
 
-I did not want to rely on just one signal. A candidate with a great profile but no real skills can fool a pure semantic system. So I combined three things:
+## Top 5 Candidates
 
-| Signal | Weight | What it checks |
-|---|---|---|
-| Semantic Similarity | 55% | Meaning-level match using AI embeddings |
-| Skill Match | 30% | Direct overlap with required and preferred skills |
-| Activity Score | 15% | Platform engagement and behavioral signals |
-| Experience Bonus | +5% | Small reward for meeting required years (score capped at 1.0) |
+| Rank | Candidate ID | Title | Years | Location | Score |
+|---|---|---|---:|---|---:|
+| 1 | CAND_0018499 | Senior Machine Learning Engineer | 7.2 | Noida, Uttar Pradesh | 0.6002 |
+| 2 | CAND_0046525 | Senior Machine Learning Engineer | 6.1 | Pune, Maharashtra | 0.5791 |
+| 3 | CAND_0081846 | Lead AI Engineer | 6.7 | Jaipur, Rajasthan | 0.5786 |
+| 4 | CAND_0064326 | Search Engineer | 7.6 | Gurgaon, Haryana | 0.5531 |
+| 5 | CAND_0068811 | Applied ML Engineer | 8.0 | Pune, Maharashtra | 0.5491 |
 
-The semantic layer uses `all-MiniLM-L6-v2` from sentence-transformers. It converts both the job description and each candidate profile into 384-dimension vectors, then measures cosine similarity. This is how it catches things like "built ETL workflows" matching "data pipelines" - a keyword filter would miss that completely.
+## Approach
 
-Skill matching handles real-world variations through a fuzzy alias system. `PySpark` correctly matches `Apache Spark`, `ML` matches `Machine Learning`, `Postgres` matches `PostgreSQL` and so on.
+The solution uses a multi-signal hybrid ranker. It does not require GPU inference, paid APIs, or network access during ranking.
 
-If sentence-transformers is not installed, the system automatically falls back to TF-IDF cosine similarity built from scratch - so it always runs, even in minimal environments.
+| Component | Weight | What It Captures |
+|---|---:|---|
+| Semantic similarity | 30% | Meaning-level match to the JD using TF-IDF fallback or MiniLM |
+| Skills | 28% | Required and preferred skills, proficiency, duration, endorsements |
+| Career quality | 20% | Product-company background, AI/ML role relevance, consulting penalty |
+| Experience fit | 12% | Fit to the 5-9 year experience range |
+| Location | 10% | Pune, Noida, Hyderabad, Mumbai, Delhi NCR preference |
+| Availability | multiplier | Response rate, recency, open-to-work, notice period |
 
----
+## Key Design Decisions
 
-## Sample Output
+- Honeypot detection flags impossible profiles before scoring.
+- Wrong-domain titles such as marketing, HR, accounting, or support are filtered early.
+- Career descriptions are mined for skills, not only the explicit skills list.
+- Availability is applied as a multiplier so inactive candidates are down-weighted.
+- The script can use sentence-transformers if available, but defaults to TF-IDF for reliable offline execution.
 
-Terminal:
+## Output Format
+
+`output/submission.csv` contains:
+
 ```text
------------------------------------------------------------------
-  TOP 5 CANDIDATES
------------------------------------------------------------------
-  # 1  Ananya Sharma          Score: 0.82  ################
-       Matched : Python, SQL, Apache Spark, AWS, ETL
-       Missing : Data Pipelines
-       Preferred: Airflow
-
-  # 2  Meera Iyer             Score: 0.80  ###############
-       Matched : Python, SQL, Apache Spark, AWS, ETL
-       Missing : Data Pipelines
-       Preferred: Kafka, Airflow
-
-  # 3  Priya Nair             Score: 0.79  ###############
-       Matched : Python, SQL, Apache Spark
-       Missing : AWS, ETL, Data Pipelines
-       Preferred: Kafka, Machine Learning, GCP
------------------------------------------------------------------
+candidate_id,rank,score,reasoning
 ```
 
-HTML report (`output/report.html`) — open in browser for a visual ranked table with score bars, matched skills in green, and missing skills in red.
-
----
+The generated file has 100 rows, unique ranks from 1 to 100, and non-increasing scores.
 
 ## Project Structure
 
 ```text
 hack2skill/
 +-- src/
-|   +-- ranker.py              <- main ranking script
+|   +-- rank.py                 <- production full-dataset ranker
+|   +-- ranker.py               <- earlier demo ranker
 +-- data/
-|   +-- job_description.json   <- job description input
-|   +-- candidates.json        <- candidate profiles
+|   +-- candidates.jsonl        <- place full dataset here
 +-- output/
-|   +-- ranked_candidates.csv  <- ranked CSV output
-|   +-- report.html            <- visual HTML report
+|   +-- submission.csv          <- generated top-100 submission
++-- submission_metadata.yaml
 +-- requirements.txt
 +-- README.md
 ```
 
----
+## Files To Submit
 
-## Input Format
+- `output/submission.csv`
+- GitHub repository: `https://github.com/RAJA1404/hack2skill.git`
+- PDF deck with final results
 
-**job_description.json**
-```json
-{
-  "title": "Senior Data Engineer",
-  "description": "Full role description...",
-  "required_skills": ["Python", "SQL", "Spark"],
-  "preferred_skills": ["Kafka", "Airflow"],
-  "experience_years": 3
-}
-```
+## Author
 
-**candidates.json**
-```json
-[
-  {
-    "id": "C001",
-    "name": "Candidate Name",
-    "summary": "Brief profile summary...",
-    "skills": ["Python", "SQL", "Spark"],
-    "experience_years": 4,
-    "activity_score": 75
-  }
-]
-```
-
----
-
-## Tech Stack
-
-- Python 3.8+
-- sentence-transformers - semantic embeddings
-- all-MiniLM-L6-v2 - lightweight, fast, 80MB model
-- scikit-learn - TF-IDF fallback
-- pandas - CSV export
-
----
-
-## About Me
-
-**Raja K C** - CS student, building things that solve real problems.
-
-- LinkedIn: [linkedin.com/in/raja-k-c-991b7a294](https://linkedin.com/in/raja-k-c-991b7a294)
-- GitHub: [github.com/RAJA1404](https://github.com/RAJA1404)
-
-*Submitted for India Runs Hackathon - Data & AI Challenge by Redrob AI x Hack2Skill*
+Raja K C  
+LinkedIn: [linkedin.com/in/raja-k-c-991b7a294](https://linkedin.com/in/raja-k-c-991b7a294)  
+GitHub: [github.com/RAJA1404](https://github.com/RAJA1404)
