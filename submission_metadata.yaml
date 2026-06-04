@@ -1,0 +1,52 @@
+team_name: "raja-kc-solo"
+
+primary_contact:
+  name: "Raja K C"
+  email: "[raja]"
+  phone: "9874561230"
+
+team_members:
+  - name: "Raja K C"
+    email: "[EMAIL_ADDRESS]"
+    role: "Solo participant"
+
+github_repo: "https://github.com/RAJA1404/hack2skill.git"
+sandbox_link: ""
+reproduce_command: "python src/rank.py --candidates ./data/candidates.jsonl --out ./output/submission.csv"
+
+compute:
+  platform: "Local machine"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.11"
+  os: "Windows 11"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
+
+ai_tools_used:
+  - "Claude"
+  - "OpenAI Codex"
+
+ai_usage_summary: |
+  Used Claude for architecture discussion, code review, and debugging.
+  All candidate data analysis, scoring logic, and design decisions were
+  made by the participant. No candidate data was sent to any LLM API.
+
+methodology_summary: |
+  Multi-signal hybrid ranker combining semantic similarity (TF-IDF with
+  optional sentence-transformers upgrade), skills scoring with proficiency
+  and duration weighting, career quality assessment (product-company history,
+  AI/ML role relevance, consulting firm penalty), experience fit, location
+  preference, and a behavioral availability multiplier using Redrob signals.
+  Honeypot detection flags impossible profiles before scoring. Pre-filter
+  removes obvious non-fits (wrong career domain) to stay within compute limits.
+  Runtime: ~90 seconds for 100K candidates on CPU.
+
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
